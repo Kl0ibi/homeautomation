@@ -1,0 +1,204 @@
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import battery_img from "./img/battery.png";
+import inverter_img from "./img/inverter.png";
+import pv_img from "./img/pv.png";
+import house_img from "./img/house.png";
+import grid_img from "./img/grid.png";
+import car_img from "./img/car.png";
+import smartload_img from "./img/smartload.png";
+import menu_img from "./img/menu.png";
+
+const App = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+    const fetchData = async () => {
+        try {
+        const response = await fetch("http://192.168.8.90:8000/values");
+        const json = await response.json();
+        setData(json);
+        } catch (error) {
+        console.error("Error fetching data:", error);
+        }
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    return () => clearInterval(interval);
+    }, []);
+
+    const getAnimationStyle = (value) => {
+    if (value > 0) return { animationDirection: "normal", visibility: "visible" };
+    if (value < 0) return { animationDirection: "reverse", visibility: "visible" };
+    return { visibility: "hidden" };
+    };
+
+    if (!data) {
+    return <div>Loading...</div>;
+    }
+
+    const { inverter, energy_meter, battery } = data;
+    const { pv_dc_w, inv_ac_w, total_pv_energy_wh, daily_pv_energy_wh } = inverter;
+    const { p_grid_w, p_load_w } = energy_meter;
+    const { battery_power_w, battery_soc } = battery;
+
+    const createArcPath = (
+    value,
+    minValue,
+    maxValue,
+    startAngle,
+    endAngle,
+    radius = 50,
+    cx = 100,
+    cy = 100
+    ) => {
+    const clampedValue = Math.min(Math.max(value, minValue), maxValue); // Clamp value between min and max
+    const valuePercentage = (clampedValue - minValue) / (maxValue - minValue); // Normalize value to 0-1 range
+    const angleRange = endAngle - startAngle;
+    const valueAngle = startAngle + valuePercentage * angleRange;
+    const startRadians = (startAngle - 90) * (Math.PI / 180);
+    const endRadians = (valueAngle - 90) * (Math.PI / 180);
+    const x1 = cx + radius * Math.cos(startRadians);
+    const y1 = cy + radius * Math.sin(startRadians);
+    const x2 = cx + radius * Math.cos(endRadians);
+    const y2 = cy + radius * Math.sin(endRadians);
+    const isFullCircle = Math.abs(valueAngle - startAngle) >= 360;
+    if (isFullCircle) {
+        return `
+        M ${cx - radius},${cy}
+        A ${radius},${radius} 0 1,1 ${cx + radius},${cy}
+        A ${radius},${radius} 0 1,1 ${cx - radius},${cy}
+        `;
+    }
+    const largeArcFlag = Math.abs(valueAngle - startAngle) > 180 ? 1 : 0;
+    return `M ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2}`;
+    };
+
+  return (
+    <div className="app-container">
+        <button>Menu</button>
+        <div className="flow-container">
+            <svg
+                viewBox="0 0 200 250"
+                xmlns="http://www.w3.org/2000/svg"
+                className="diagram"
+            >
+                {/* Pipelines */}
+                <path d="M100 40 C 100 65, 100 65, 100 90" className="pipeline" />
+                <path d="M110 100 C 135 100, 135 100, 160 100" className="pipeline" />
+                <path d="M100 110 C 100 135, 100 135, 100 160" className="pipeline" />
+                <path d="M40 100 C 65 100, 65 100, 90 100" className="pipeline" />
+
+                <path d="M175 100 C 175 125, 175 125, 175 170" className="pipeline" />
+                <path d="M175 100 C 175 80, 175 80, 175 30" className="pipeline" />
+                {/* Animation Lines */}
+                <path
+                d="M100 40 C 100 65, 100 65, 100 90"
+                className="pipeline-animation"
+                style={{ stroke: "yellow", ...getAnimationStyle(pv_dc_w) }}
+                />
+                <path
+                d="M110 100 C 135 100, 135 100, 160 100"
+                className="pipeline-animation"
+                style={{ stroke: "orange", ...getAnimationStyle(p_load_w) }}
+                />
+                <path
+                d="M100 110 C 100 135, 100 135, 100 160"
+                className="pipeline-animation"
+                style={{ stroke: "gray", ...getAnimationStyle(-p_grid_w) }}
+                />
+                <path
+                d="M40 100 C 65 100, 65 100, 90 100"
+                className="pipeline-animation"
+                style={{ stroke: "green", ...getAnimationStyle(-battery_power_w) }}
+                />
+
+                <path
+                d="M175 100 C 175 125, 175 125, 175 170"
+                className="pipeline-animation"
+                style={{ stroke: "red", ...getAnimationStyle(0) }}
+                />
+                <path
+                d="M175 100 C 175 80, 175 80, 175 30"
+                className="pipeline-animation"
+                style={{ stroke: "blue", ...getAnimationStyle(0) }}
+                />
+
+
+                {/* Images */}
+                <image
+                href={pv_img}
+                x="70"
+                y="-8"
+                width="60"
+                height="80"
+                alt="pv panel"
+                />
+                <image
+                href={inverter_img}
+                x="85"
+                y="76"
+                width="30"
+                height="50"
+                alt="inverter"
+                />
+                <image
+                href={battery_img}
+                x="-25"
+                y="50"
+                width="100"
+                alt="battery"
+                />
+                <image
+                href={house_img}
+                x="130"
+                y="60"
+                width="80"
+                alt="house"
+                />
+                <image
+                href={grid_img}
+                x="72"
+                y="145"
+                height="55"
+                alt="grid"
+                />
+                <image
+                href={car_img}
+                x="138"
+                y="0"
+                height="60"
+                alt="car"
+                />
+                <image
+                href={smartload_img}
+                x="135"
+                y="155"
+                height="50"
+                alt="smartload"
+                />
+
+                {/* Arcs */}
+                <path
+                d={createArcPath(battery_soc, 0, 100, -90, 270, 19, 25, 100)} // Full arc with value 80 (0-100 range)
+                fill="none"
+                stroke="green"
+                strokeWidth="2"
+                />
+
+                {/* Text */}
+                <text x="10" y="105" fill="green" fontWeight="bold" fontSize="15">{battery_soc}%</text>
+                <text x="2" y="170"  fill="green" fontWeight="bold" fontSize="13">{battery_power_w}W</text>
+                <text x="80" y="10" fill="yellow" fontWeight="bold" fontSize="13">{pv_dc_w}W</text>
+                <text x="120" y="135" fill="orange" fontWeight="bold" fontSize="13">{p_load_w}W</text>
+                <text x="80" y="215" fill="gray" fontWeight="bold" fontSize="13">{p_grid_w}W</text>
+                <text x="150" y="10" fill="blue" fontWeight="bold" fontSize="13">0W</text>
+                <text x="150" y="215" fill="red" fontWeight="bold" fontSize="13">0W</text>
+
+            </svg>
+        </div>
+    </div>
+  );
+};
+
+export default App;

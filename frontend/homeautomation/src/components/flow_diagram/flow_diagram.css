@@ -1,0 +1,258 @@
+body {
+  background-color: #1e1e2f;
+}
+
+
+.live-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e2f;
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.top-section {
+  flex: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #2a2a3f;
+  border-radius: 12px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.clock h2 {
+  margin: 0;
+  font-size: 40px;
+}
+
+.clock p {
+  margin: 0;
+  font-size: 25px;
+}
+
+.stats-main {
+  display: flex;
+  justify-content: space-between; /* Space out the containers */
+  align-items: center; /* Vertically align the containers */
+  width: 100%; /* Ensure it takes up the full width */
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  background-color: #2a2a3f;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  flex: 1; /* Ensures containers share equal width */
+  margin-right: 10px; /* Space between containers */
+  max-width: 48%;
+}
+
+.stats-container:last-child {
+  margin-right: 0; /* Removes the margin from the last container */
+}
+
+.stats {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  max-width: 90vh;
+  max-height: 10vh;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.stat-card {
+  text-align: center;
+  padding: 15px;
+  background-color: #3a3a5f;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  flex: 1;
+  margin: 0 10px;
+}
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.flow-container {
+  display: flex;
+  justify-content: center;
+  background-color: #2a2a3f;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-height: 70vh;
+}
+
+.diagram {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  max-width: 90vh;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.arc-circle {
+  fill: none;
+  stroke: #4a4a5a;
+  opacity: 0.6;
+}
+
+.pipeline {
+  stroke: #4a4a5a;
+  stroke-width: 5;
+  fill: transparent;
+  stroke-linecap: round;
+}
+
+.pipeline-animation {
+  stroke-width: 4;
+  stroke-dasharray: 12, 12;
+  animation: move-dash 1s linear infinite;
+  stroke-linecap: round;
+}
+
+@keyframes move-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.text-label {
+  font-weight: 600;
+  font-size: 14px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.text-label-sub {
+  font-weight: 600;
+  font-size: 10px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.text-label-sub1 {
+  font-weight: 800;
+  font-size: 6px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.text-label-sub3 {
+  font-weight: 800;
+  font-size: 5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.text-label-sub2 {
+  font-weight: 800;
+  font-size: 4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.loading {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+image {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.3));
+}
+
+image:hover {
+  transform: scale(1.005);
+  filter: drop-shadow(0 4px 8px rgba(255, 255, 255, 0.5));
+}
+
+/* Tooltip Styling */
+.react-tooltip {
+  font-size: 14px;
+  background-color: #3a3a5f !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 10px 15px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+  .stats-main {
+      display: block;
+  }
+  .stats-container {
+    /* change later */
+    padding: 10px;
+    max-width: 100%;
+      margin-right: 0;
+  }
+
+  .stat-card {
+    /*width: 100%;
+    margin: 10px 0;*/
+    padding: 10px;
+  }
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+  .flow-container {
+    padding: 10px;
+  }
+
+  .text-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-height: 500px) {
+
+  .stats-container {
+      display:none;
+
+    /* change later */
+  }
+
+  .stat-card {
+    /*width: 100%;
+    margin: 10px 0;*/
+    padding: 5px;
+  }
+
+  .flow-container {
+    padding: 10px;
+  }
+
+  .text-label {
+    font-size: 12px;
+  }
+}
+
