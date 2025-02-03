@@ -18,7 +18,7 @@ const FlowDiagram = () => {
     useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("proxy.php");
+        const response = await fetch("live_proxy.php");
         const json = await response.json();
         
         // Set the data from the combined response
@@ -51,7 +51,7 @@ const FlowDiagram = () => {
   }
 
   const {
-    inverter: { pv_dc_w, pv1_power, pv2_power, inv_ac_w, pv1_voltage, pv1_current, pv2_voltage, pv2_current, daily_inv_energy_wh, total_pv_energy_wh, total_inv_energy_wh },
+    inverter: {pv1_power, pv2_power, inv_ac_w, pv1_voltage, pv1_current, pv2_voltage, pv2_current, daily_inv_energy_wh, total_pv_energy_wh, total_inv_energy_wh },
     energy_meter: { p_grid_w, p_load_w, freq_hz, L1, L2, L3, energy_real_cons_wh, energy_real_prod_wh },
     battery: { battery_power_w, battery_soc, battery_working_mode,  total_charged_energy_wh, total_discharged_energy_wh },
     nrgkick : {power, user_set_current, max_current_to_ev, charged_energy, housing_temp, cp_status, switched_relais, warning_code, error_code},
@@ -178,9 +178,12 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
         return "#2ECC71"; // Grün (nahezu autark)
     };
 
+    const sum_pv_power = pv1_power + pv2_power;
+
     const self_suff_energy_wh = cons_energy_wh - cons_energy_from_grid_wh;
     const {pie_path1_1, pie_path2_1} = createPiePath(cons_energy_wh, cons_energy_from_grid_wh, self_suff_energy_wh, 0, 12, -54, 20, 1);
-    const autarky = ((100 / cons_energy_wh) * self_suff_energy_wh).toFixed(2);
+
+    const autarky = cons_energy_wh > 0 ? ((100 / cons_energy_wh) * self_suff_energy_wh).toFixed(2) : 0.00;
     const prod_energy_sum_wh = prod_energy_pv1_wh + prod_energy_pv2_wh;
     const self_cons_energy_wh = prod_energy_sum_wh - fed_energy_to_grid_wh;
     const { pie_path1_2, pie_path2_2 } = createPiePath(prod_energy_sum_wh, fed_energy_to_grid_wh, self_cons_energy_wh, 0, 12, 54, 20, 2);
@@ -243,13 +246,13 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
         <div className="stats-container">
             <svg viewBox="-100 0 200 40" xmlns="http://www.w3.org/2000/svg" className="stats">
                 <text x="-75" y="38" className="text-label-sub3" style={{ fill: "#32CD32" }}>Geladen</text>
-                {createArcValueWithUnit((discharged_energy_wh / 1000).toFixed(2), "kWh", "#32CD32", -82, 20)}
+                {createArcValueWithUnit((charged_energy_wh / 1000).toFixed(2), "kWh", "#32CD32", -82, 20)}
                 <text x="-75" y="5" className="text-label-sub1" style={{ fill: "#32CD32" }}>Batterienutzung</text>
                 <circle cx="-54" cy="20" r="12" strokeWidth="1.5" className="arc-circle"/>
                 <path d={pie_path1_3} fill="none" stroke="#32CD32" strokeWidth="1.5"/>
                 <path d={pie_path2_3} fill="none" stroke="#087515" strokeWidth="1.5"/>
                 {createArcValueWithUnit((energy_battery_sum / 1000).toFixed(2), "kWh", "#32CD32", -61, 20)}
-                {createArcValueWithUnit((charged_energy_wh / 1000).toFixed(2), "kWh", "#087515", -37, 20)}
+                {createArcValueWithUnit((discharged_energy_wh / 1000).toFixed(2), "kWh", "#087515", -37, 20)}
                 <text x="-51" y="38" className="text-label-sub3" style={{ fill: "#087515" }}>Entladen</text>
 
                 <circle cx="0" cy="20" r="12" strokeWidth="1.5" className="arc-circle"/>
@@ -258,9 +261,9 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
                 {createArcValueWithUnit((heated_energy_wh / 1000).toFixed(2), "kWh", "#FF4500", -5, 20)}
 
 
-                <text x="26" y="32" className="text-label-sub3" style={{ fill: "#FFD700" }}>Ost</text>
+                <text x="20" y="32" className="text-label-sub3" style={{ fill: "#FFD700" }}>Süd / West</text>
                 {createArcValueWithUnit((prod_energy_pv1_wh / 1000).toFixed(2), "kWh", "#FFD700", 25, 20)}
-                <text x="37" y="5" className="text-label-sub1" style={{ fill: "#FFD700" }}>Ausrichtung</text>
+                <text x="42" y="5" className="text-label-sub1" style={{ fill: "#FFD700" }}>Ausrichtung</text>
                 <line x1="42" y1="20" x2="66" y2="20" strokeWidth="1.5" className="arc-circle"/>
 
 
@@ -268,7 +271,7 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
                 <path d={bar_path2_1} fill="none" stroke="#FFA500" strokeWidth="3"/>
                 <path d={split_line_1} fill="none" stroke="gray" strokeWidth="2"/>
                 {createArcValueWithUnit((prod_energy_pv2_wh / 1000).toFixed(2), "kWh", "#FFA500", 72, 20)}
-                <text x="68" y="32" className="text-label-sub3" style={{ fill: "#FFA500" }}>Süd / West</text>
+                <text x="74" y="32" className="text-label-sub3" style={{ fill: "#FFA500" }}>Ost</text>
             </svg>
         </div>
         </div>
@@ -338,7 +341,7 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
           {/* Text Labels */}
           <text x="10" y="130" className="text-label" style={{ fill: "#32CD32" }}>{battery_soc}%</text>
           <text x="3" y="195" className="text-label" style={{ fill: "#32CD32" }}>{battery_power_w}W</text>
-          <text x="80" y="33" className="text-label" style={{ fill: "#FFD700" }}>{pv_dc_w}W</text>
+          <text x="80" y="33" className="text-label" style={{ fill: "#FFD700" }}>{sum_pv_power}W</text>
           <text x="60" y="45" className="text-label-sub" style={{ fill: "#FFD700" }}>{pv1_power}W</text>
           <text x="110" y="45" className="text-label-sub" style={{ fill: "#FFD700" }}>{pv2_power}W</text>
           <text x="120" y="160" className="text-label" style={{ fill: "#FFA500" }}>{p_load_w}W</text>
@@ -401,7 +404,7 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
                 <div>
                     <table>
                     <tbody>
-                        <tr><td>Heute Verbrauch:</td><td>{cons_energy_wh} W</td></tr>
+                        <tr><td>Heute Verbrauch:</td><td>{cons_energy_wh} Wh</td></tr>
                     </tbody>
                     </table>
                 </div>

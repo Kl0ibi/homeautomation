@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import "./App.css";
 import Menu from "./components/menu/menu";
 import FlowDiagram from "./components/flow_diagram/flow_diagram";
-import GarageControler from "./components/garage/garage";
 import SolarPVChart from "./components/solar_chart/solar_chart";
+import GridChart from "./components/grid_chart/grid_chart";
+import EnergyChart from "./components/energy_chart/energy_chart";
 
 
 const App = () => {
@@ -17,8 +18,9 @@ const App = () => {
     <div className="app-container">
       <Menu onSwitchPage={switchPage} />
       {currentPage === "liveData" && <FlowDiagram />}
-      {currentPage === "historicalData" && <SolarPVChart/>}
-      {currentPage === "garageOpener" && <GarageControler/>}
+      {currentPage === "pvChart" && <SolarPVChart/>}
+      {currentPage === "gridChart" && <GridChart/>}
+      {currentPage === "energyChart" && <EnergyChart/>}
     </div>
   );
 };

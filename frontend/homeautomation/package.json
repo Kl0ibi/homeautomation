@@ -7,9 +7,12 @@
     "highcharts": "^12.1.2",
     "highcharts-react-official": "^3.2.1",
     "react": "^19.0.0",
+    "react-datepicker": "^8.0.0",
     "react-dom": "^19.0.0",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.15.0",
     "react-tooltip": "^5.28.0",
+    "timezone-data": "^0.1.9",
     "tooltip": "^1.6.1",
     "web-vitals": "^4.2.4"
   },

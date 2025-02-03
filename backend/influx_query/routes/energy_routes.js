@@ -3,16 +3,19 @@ const { queryEnergySum } = require('../influx');
 
 const router = express.Router();
 
-const getTodayStart = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.toISOString();
+const getDayStart = (day) => {
+    const date = new Date(day);
+    date.setHours(0, 0, 0, 0);
+    return date.toISOString();
 };
 
-router.get('/sum', async (req, res) => {
+router.get('/sum/:day?', async (req, res) => {
     try {
-        const start_time = req.query.start || getTodayStart();
-        const stop_time = req.query.stop || new Date().toISOString();
+        const day = req.params.day || new Date().toISOString().split('T')[0]; // Default to today's date if no parameter
+        const start_time = getDayStart(day);
+        const stop_time = new Date(start_time);
+        stop_time.setDate(stop_time.getDate() + 1); // End of the day (24 hours later)
+
 
         const pv1_energy = await queryEnergySum('p_pv1', false, true, start_time, stop_time);
         const pv2_energy = await queryEnergySum('p_pv2', false, true, start_time, stop_time);

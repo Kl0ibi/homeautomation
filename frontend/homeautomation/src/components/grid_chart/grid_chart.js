@@ -4,11 +4,11 @@ import HighchartsReact from "highcharts-react-official";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ClipLoader } from "react-spinners";
-import "./solar_chart.css";
+import "./grid_chart.css";
 
-const API_BASE_URL = "pv_chart_proxy.php";
+const API_BASE_URL = "grid_chart_proxy.php";
 
-function SolarPVChart() {
+function GridChart() {
   const [chartData, setChartData] = useState({ categories: [], series: [] });
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
@@ -66,71 +66,54 @@ function SolarPVChart() {
       let color, fillColor, type, yAxis, visible = true, name;
 
       switch (field) {
-        case "p_pv":
-          color = "rgba(255, 255, 0, 0.6)";
-          fillColor = "rgba(255, 255, 0, 0.3)";
-          type = "areaspline";
+        case "i_l1":
+          color = "rgba(165, 42, 42, 0.6)";
+          fillColor = "rgba(165, 42, 42, 0.3)";
+          type = "spline";
           yAxis = 0;
-          name= "Produktionsleistung";
+          name= "Strom L1";
           break;
-        case "p_pv1":
-          color = "rgba(200, 255, 0, 0.6)";
-          fillColor = "rgba(200, 255, 0, 0.3)";
-          type = "areaspline";
+        case "i_l2":
+          color = "rgba(30, 30, 150, 0.6)";
+          fillColor = "rgba(30, 30, 150, 0.3)";
+          type = "spline";
           yAxis = 0;
-          name= "Produktion Süd / West";
-          visible = false;
+          name= "Strom L2";
           break;
-        case "p_pv2":
-          color = "rgba(160, 220, 0, 0.6)";
-          fillColor = "rgba(160, 220, 0, 0.3)";
-          type = "areaspline";
+        case "i_l3":
+          color = "rgba(0, 100, 150, 0.6)";
+          fillColor = "rgba(0, 100, 150, 0.3)";
+          type = "spline";
           yAxis = 0;
-          name= "Produktion Ost";
-          visible = false;
+          name= "Strom L3";
           break;
-        case "p_bat":
-          color = "rgba(0, 255, 0, 0.6)";
-          fillColor = "rgba(0, 255, 0, 0.3)";
-          type = "areaspline";
-          yAxis = 0;
-          name= "Batterieleistung";
-          break;
-        case "p_grid":
-          color = "rgba(150, 150, 150, 0.6)";
-          fillColor = "rgba(150, 150, 150, 0.3)";
-          type = "areaspline";
-          yAxis = 0;
-          name= "Netzleistung";
-          break;
-        case "p_load":
-          visible = false;
-          color = "rgba(255, 150, 0, 0.6)";
-          fillColor = "rgba(255, 150, 0, 0.3)";
-          type = "areaspline";
-          yAxis = 0;
-          name= "Hauslast";
-          break;
-        case "sl_power":
+        case "u_l1":
           color = "rgba(255, 0, 0, 0.6)";
           fillColor = "rgba(255, 0, 0, 0.3)";
-          type = "areaspline";
-          yAxis = 0;
-          name= "Heizstableistung";
-          break;
-        case "soc":
-          color = "rgba(0, 255, 0, 0.8)";
-          fillColor = "rgba(0, 255, 0, 0.8)";
           type = "spline";
           yAxis = 1;
-          name= "Ladezustand";
+          name= "Spannung L1";
           break;
-        case "boiler_temp":
-          color = "rgba(255, 0, 0, 0.8)";
-          fillColor = "rgba(255, 0, 0, 0.8)";
+        case "u_l2":
+          color = "rgba(0, 255, 0, 0.6)";
+          fillColor = "rgba(0, 255, 0, 0.3)";
           type = "spline";
           yAxis = 1;
-          name= "Wassertemperatur";
+          name= "Spannung L2";
+          break;
+        case "u_l3":
+          color = "rgba(0, 0, 255, 0.6)";
+          fillColor = "rgba(0, 0, 255, 0.3)";
+          type = "spline";
+          yAxis = 1;
+          name= "Spannung L3";
+          break;
+        case "freq":
+          color = "rgba(255, 165, 0, 0.6)";
+          fillColor = "rgba(255, 165, 0, 0.3)";
+          type = "spline";
+          yAxis = 1;
+          name= "Frequenz";
           break;
         default:
           visible = false;
@@ -141,16 +124,17 @@ function SolarPVChart() {
           name= null;
       }
 
-      const dataWithGaps = data.fields[field].map((entry, index) => {
-        const currentTime = new Date(entry.time).getTime();
-        const prevTime = index > 0 ? new Date(data.fields[field][index - 1].time).getTime() : currentTime;
-        const timeDiff = currentTime - prevTime;
+const dataWithGaps = data.fields[field].map((entry, index) => {
+    const currentTime = new Date(entry.time).getTime();
+    const prevTime = index > 0 ? new Date(data.fields[field][index - 1].time).getTime() : currentTime;
+    const timeDiff = currentTime - prevTime;
+    if (timeDiff > 5 * 60 * 1000) {
+        return [prevTime + 1, null];
+    }
+    return [currentTime, entry.value];
+});
 
-        if (timeDiff > 5 * 60 * 1000) {
-          return [currentTime, null];
-        }
-        return [currentTime, entry.value];
-      });
+// Highcharts options
 
       return {
         name: name != null ? name : field,
@@ -243,18 +227,16 @@ useEffect(() => {
 
   function get_unit(field) {
     switch (field) {
-      case "Produktionsleistung":
-      case "Produktion Süd / West":
-      case "Produktion Ost":
-      case "Batterieleistung":
-      case "Netzleistung":
-      case "Hauslast":
-      case "Heizstableistung":
-        return "W";
-      case "Ladezustand":
-        return "%";
-      case "Wassertemperatur":
-        return "°C";
+      case "Strom L1":
+      case "Strom L2":
+      case "Strom L3":
+        return "A";
+      case "Spannung L1":
+      case "Spannung L2":
+      case "Spannung L3":
+        return "V";
+      case "Frequenz":
+        return "Hz";
       default:
         return "";
     }
@@ -262,7 +244,14 @@ useEffect(() => {
 
   function get_unit_tofixed(field) {
     switch (field) {
-      case "Wassertemperatur":
+      case "Strom L1":
+      case "Strom L2":
+      case "Strom L3":
+      case "Frequenz":
+        return 2;
+      case "Spannung L1":
+      case "Spannung L2":
+      case "Spannung L3":
         return 1;
       default:
         return 0;
@@ -313,12 +302,12 @@ useEffect(() => {
     },
     yAxis: [
       {
-        title: { text: "W", style: { color: "#f0f0f0" } },
+        title: { text: "A", style: { color: "#f0f0f0" } },
         labels: { style: { color: "#f0f0f0" } },
         gridLineColor: "#333",
       },
       {
-        title: { text: "%, °C", style: { color: "#f0f0f0"} },
+        title: { text: "V, Hz", style: { color: "#f0f0f0"} },
         labels: { style: { color: "#f0f0f0" } },
         gridLineColor: "#333",
         rotation: 180,
@@ -419,4 +408,4 @@ useEffect(() => {
   );
 }
 
-export default SolarPVChart;
+export default GridChart;

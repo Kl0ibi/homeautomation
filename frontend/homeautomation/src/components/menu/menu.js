@@ -21,9 +21,10 @@ const Menu = ({ onSwitchPage }) => {
       </button>
       {menuOpen && (
         <div className="menu-dropdown">
-          <button onClick={() => handlePageSwitch("liveData")}>Live Data</button>
-          <button onClick={() => handlePageSwitch("historicalData")}>Historical Data</button>
-          <button onClick={() => handlePageSwitch("garageOpener")}>Garage Opener</button>
+          <button onClick={() => handlePageSwitch("liveData")}>Live</button>
+          <button onClick={() => handlePageSwitch("pvChart")}>PV-Chart</button>
+          <button onClick={() => handlePageSwitch("gridChart")}>Netz-Chart</button>
+          <button onClick={() => handlePageSwitch("energyChart")}>Energie-Chart</button>
         </div>
       )}
     </div>

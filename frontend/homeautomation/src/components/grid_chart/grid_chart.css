@@ -1,0 +1,65 @@
+/* Add styles for the overlay spinner */
+.loading-spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Add spinner container */
+.loading-spinner-container {
+  margin-left: 10px;
+}
+
+/* Date Picker and Button Styling */
+.date-picker-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+.date-picker {
+  background-color: #1e1e2f;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  padding: 8px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1em;
+  outline: none;
+  max-width: 85px;
+}
+
+.date-picker::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.date-picker:focus {
+  border-color: #1e1e2f;
+  box-shadow: 0 0 5px rgba(0, 234, 255, 0.5);
+}
+
+.request-button {
+  background-color: #ffffff;
+  color: #1e1e2f;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.request-button:hover {
+  background-color: #00b8d4;
+}
