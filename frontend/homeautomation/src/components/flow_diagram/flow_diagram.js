@@ -18,7 +18,7 @@ const FlowDiagram = () => {
     useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("live_proxy.php");
+        const response = await fetch("http://localhost:8000/live_proxy.php");
         const json = await response.json();
         
         // Set the data from the combined response
@@ -185,7 +185,7 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
 
     const autarky = cons_energy_wh > 0 ? ((100 / cons_energy_wh) * self_suff_energy_wh).toFixed(2) : 0.00;
     const prod_energy_sum_wh = prod_energy_pv1_wh + prod_energy_pv2_wh;
-    const self_cons_energy_wh = prod_energy_sum_wh - fed_energy_to_grid_wh;
+    const self_cons_energy_wh = (prod_energy_sum_wh - fed_energy_to_grid_wh) > 0 ? (prod_energy_sum_wh - fed_energy_to_grid_wh) : 0;
     const { pie_path1_2, pie_path2_2 } = createPiePath(prod_energy_sum_wh, fed_energy_to_grid_wh, self_cons_energy_wh, 0, 12, 54, 20, 2);
 
     const energy_battery_sum = charged_energy_wh + discharged_energy_wh;
@@ -258,12 +258,12 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
                 <circle cx="0" cy="20" r="12" strokeWidth="1.5" className="arc-circle"/>
                 <text x="-11" y="5" className="text-label-sub1" style={{ fill: "#FF4500", }}>Heizstab</text>
                 <path d={createArcPath(boiler_temp, 0, 100, 0, 360, 12, 0, 20)} fill="none" stroke="#FF4500" strokeWidth="1.5" />
-                {createArcValueWithUnit((heated_energy_wh / 1000).toFixed(2), "kWh", "#FF4500", -5, 20)}
+                {createArcValueWithUnit((heated_energy_wh / 1000).toFixed(2), "kWh", "#FF4500", -7, 20)}
 
 
                 <text x="20" y="32" className="text-label-sub3" style={{ fill: "#FFD700" }}>Süd / West</text>
                 {createArcValueWithUnit((prod_energy_pv1_wh / 1000).toFixed(2), "kWh", "#FFD700", 25, 20)}
-                <text x="42" y="5" className="text-label-sub1" style={{ fill: "#FFD700" }}>Ausrichtung</text>
+                <text x="39" y="5" className="text-label-sub1" style={{ fill: "#FFD700" }}>Ausrichtung</text>
                 <line x1="42" y1="20" x2="66" y2="20" strokeWidth="1.5" className="arc-circle"/>
 
 

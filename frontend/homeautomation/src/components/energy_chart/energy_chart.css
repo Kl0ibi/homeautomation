@@ -1,4 +1,11 @@
-/* Add styles for the overlay spinner */
+html, body {
+  touch-action: manipulation; /* Verhindert Double-Tap-Zoom */
+}
+
+* {
+  user-select: none;
+}
+
 .loading-spinner-overlay {
   position: absolute;
   top: 0;

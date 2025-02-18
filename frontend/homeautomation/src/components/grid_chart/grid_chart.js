@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ClipLoader } from "react-spinners";
 import "./grid_chart.css";
 
-const API_BASE_URL = "grid_chart_proxy.php";
+const API_BASE_URL = "grid_chart_proxy.php:8000";
 
 function GridChart() {
   const [chartData, setChartData] = useState({ categories: [], series: [] });
@@ -23,11 +23,7 @@ function GridChart() {
     try {
       const response = await fetch(url, { signal });
       const text = await response.text();
-      console.log("Raw API Response:", text);
-
       const data = JSON.parse(text);
-      console.log("Parsed Data:", data);
-
       return data;
     } catch (error) {
       if (error.name === "AbortError") {
@@ -43,7 +39,7 @@ function GridChart() {
     setIsFetching(true);
     setIsLoading(true);
     const formattedDate = formatDateForAPI(date);
-    const apiUrl = `${API_BASE_URL}/${formattedDate}`;
+    const apiUrl = `${API_BASE_URL}?date=${formattedDate}`;
 
     const data = await fetchWithTimeout(apiUrl, 60000);
     if (!data || !data.fields) {

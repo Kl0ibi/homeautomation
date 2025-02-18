@@ -1,3 +1,12 @@
+html, body {
+  touch-action: manipulation; /* Verhindert Double-Tap-Zoom */
+}
+
+/* Optional: Verhindere Textauswahl */
+* {
+  user-select: none;
+}
+
 /* Add styles for the overlay spinner */
 .loading-spinner-overlay {
   position: absolute;

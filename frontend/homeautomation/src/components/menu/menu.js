@@ -25,6 +25,7 @@ const Menu = ({ onSwitchPage }) => {
           <button onClick={() => handlePageSwitch("pvChart")}>PV-Chart</button>
           <button onClick={() => handlePageSwitch("gridChart")}>Netz-Chart</button>
           <button onClick={() => handlePageSwitch("energyChart")}>Energie-Chart</button>
+          <button onClick={() => handlePageSwitch("weather")}>Wetter</button>
         </div>
       )}
     </div>

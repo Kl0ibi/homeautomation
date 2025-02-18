@@ -1,0 +1,109 @@
+/*body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}*/
+
+.Weather {
+  max-width: 1200px;
+  padding: 80px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Aktuelles Wetter */
+.current-weather {
+  background-color: #2a2a3f;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.current-weather img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: -30px;
+}
+
+.current-weather p {
+  font-size: 1.1em;
+  margin: 5px 0;
+}
+
+/* Vorhersage */
+.forecast {
+  margin-top: 40px;
+  color: #ffffff;
+}
+
+.forecast-days {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: #ffffff;
+  overflow-x: scroll;
+}
+
+.forecast-day {
+  background-color: #2a2a3f;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forecast-day:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-day img {
+  width: 50px;
+  height: 50px;
+}
+
+.forecast-day p {
+  margin: 5px 0;
+  font-size: 1.1em;
+}
+
+/* Stündliche Vorhersage */
+.hourly-forecast {
+  margin-top: 30px;
+  background-color: #2a2a3f;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.hourly-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.hourly-item {
+  background-color: #1e1e2f;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.hourly-item img {
+  width: 40px;
+  height: 40px;
+}
+
+.hourly-item p {
+  margin: 5px 0;
+  font-size: 1.1em;
+}

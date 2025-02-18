@@ -23,11 +23,7 @@ function EnergyChart() {
     try {
       const response = await fetch(url, { signal });
       const text = await response.text();
-      console.log("Raw API Response:", text);
-
       const data = JSON.parse(text);
-      console.log("Parsed Data:", data);
-
       return data;
     } catch (error) {
       if (error.name === "AbortError") {
@@ -43,7 +39,7 @@ const fetchData = async (date) => {
   setIsFetching(true);
   setIsLoading(true);
   const formattedDate = formatDateForAPI(date);
-  const apiUrl = `${API_BASE_URL}/${formattedDate}`;
+  const apiUrl = `${API_BASE_URL}?date=${formattedDate}`;
 
   const data = await fetchWithTimeout(apiUrl, 60000);
   if (!data) {
