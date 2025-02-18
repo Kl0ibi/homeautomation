@@ -18,7 +18,7 @@ const FlowDiagram = () => {
     useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/live_proxy.php");
+        const response = await fetch("live_proxy.php");
         const json = await response.json();
         
         // Set the data from the combined response
