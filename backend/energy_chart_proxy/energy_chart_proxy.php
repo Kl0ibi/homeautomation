@@ -2,12 +2,11 @@
 // Set the base URL
 $baseUrl = "http://kloibi.ddns.net:58000/energy/sum";
 
-// Check if the date is provided in the query parameter
-if (isset($_GET['date']) && !empty($_GET['date'])) {
-    $date = $_GET['date'];
-    $apiUrl = $baseUrl . '/' . $date; // Append the date to the base URL
+if (!empty($_GET['date']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['date'])) {
+    $date = urlencode($_GET['date']);
+    $apiUrl = "$baseUrl/$date";
 } else {
-    $apiUrl = $baseUrl; // Use the base URL without a date
+    $apiUrl = $baseUrl;
 }
 
 // Initialize cURL session

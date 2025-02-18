@@ -24,7 +24,7 @@ router.get('/sum/:day?', async (req, res) => {
         const consumed_energy_from_grid = await queryEnergySum('p_grid', false, true, start_time, stop_time);
         const charged_energy = await queryEnergySum('p_bat', true, false, start_time, stop_time);
         const discharged_energy = await queryEnergySum('p_bat', false, true, start_time, stop_time);
-        const heated_energy = await queryEnergySum('sl_power', false, true, start_time, stop_time);
+        const heated_energy = await queryEnergySum('sl_power', false, false, start_time, stop_time);
 
         res.json({
             prod_energy_pv1_wh: pv1_energy,
