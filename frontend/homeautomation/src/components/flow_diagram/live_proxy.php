@@ -1,6 +1,3 @@
-
-
-
 <?php
 // Function to fetch data from the provided URL using cURL
 
@@ -22,6 +19,8 @@ function fetchData($url) {
 // URLs to fetch data from
 $values_url = "http://192.168.8.90:8000/values";
 $energy_url = "http://192.168.8.90:5000/energy/sum";
+//$values_url = "http://kloibi.ddns.net:55000/values";
+//$energy_url = "http://kloibi.ddns.net:58000/energy/sum";
 
 // Perform the two fetches
 $values_response = fetchData($values_url);

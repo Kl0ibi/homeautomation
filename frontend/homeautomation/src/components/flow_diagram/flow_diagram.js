@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./flow_diagram.css";
-import battery_img from "../../img/battery.png";
-import inverter_img from "../../img/inverter.png";
+import battery_img from "../../img/byd.png";
+import inverter_img from "../../img/gen24.png";
 import pv1_img from "../../img/pv1.png";
 import pv2_img from "../../img/pv2.png";
 import house_img from "../../img/house.png";
-import grid_img from "../../img/grid.png";
-import car_img from "../../img/car.png";
+import grid_img from "../../img/fronius_sm.png";
 import smartload_img from "../../img/smartload.png";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
@@ -54,7 +53,6 @@ const FlowDiagram = () => {
     inverter: {pv1_power, pv2_power, inv_ac_w, pv1_voltage, pv1_current, pv2_voltage, pv2_current, daily_inv_energy_wh, total_pv_energy_wh, total_inv_energy_wh },
     energy_meter: { p_grid_w, p_load_w, freq_hz, L1, L2, L3, energy_real_cons_wh, energy_real_prod_wh },
     battery: { battery_power_w, battery_soc, battery_working_mode,  total_charged_energy_wh, total_discharged_energy_wh },
-    nrgkick : {power, user_set_current, max_current_to_ev, charged_energy, housing_temp, cp_status, switched_relais, warning_code, error_code},
     smartload : { boiler_temp, sl_power, sl_status, sl_temp},
   } = data;
 
@@ -282,7 +280,6 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
           <path d="M100 135 C 100 160, 100 160, 100 185" className="pipeline" />
           <path d="M40 125 C 65 125, 65 125, 90 125" className="pipeline" />
           <path d="M175 125 C 175 150, 175 150, 175 195" className="pipeline" />
-          <path d="M175 125 C 175 105, 175 105, 175 55" className="pipeline" />
 
           <path d="M80 65 C 80 105, 100 90, 100 115" className="pipeline" />
           <path d="M120 65 C 120 105, 100 90, 100 115" className="pipeline" />
@@ -319,20 +316,14 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
             className="pipeline-animation"
             style={{ stroke: "#FF4500", ...getAnimationStyle(sl_power) }}
           />
-          <path
-            d="M175 125 C 175 105, 175 105, 175 55"
-            className="pipeline-animation"
-            style={{ stroke: "#1E90FF", ...getAnimationStyle(0) }}
-          />
 
           {/* Images */}
           <image href={pv1_img} x="60" y="45" width="40" alt="pv panel1" data-tooltip-id="pv1-tooltip" />
           <image href={pv2_img} x="100" y="45" width="40" alt="pv panel2" data-tooltip-id="pv2-tooltip" />
-          <image href={inverter_img} x="85" y="111" width="30" alt="inverter" data-tooltip-id="inverter-tooltip" />
-          <image href={battery_img} x="-25" y="75" width="100" alt="battery" data-tooltip-id="battery-tooltip" />
+          <image href={inverter_img} x="80" y="105" width="40" alt="inverter" data-tooltip-id="inverter-tooltip" />
+          <image href={battery_img} x="-35" y="65" width="120" alt="battery" data-tooltip-id="battery-tooltip" />
           <image href={house_img} x="130" y="85" width="80" alt="house" data-tooltip-id="house-tooltip" />
-          <image href={grid_img} x="72" y="170" height="55" alt="grid" data-tooltip-id="grid-tooltip" />
-          <image href={car_img} x="138" y="25" height="60" alt="car" data-tooltip-id="car-tooltip" />
+          <image href={grid_img} x="52" y="170" height="56" alt="grid" data-tooltip-id="grid-tooltip" />
           <image href={smartload_img} x="135" y="176" height="50" alt="smartload" data-tooltip-id="smartload-tooltip" />
 
           <circle cx="25" cy="125" r="19" strokeWidth="2" className="arc-circle"/>
@@ -346,7 +337,6 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
           <text x="110" y="45" className="text-label-sub" style={{ fill: "#FFD700" }}>{pv2_power}W</text>
           <text x="120" y="160" className="text-label" style={{ fill: "#FFA500" }}>{p_load_w}W</text>
           <text x="80" y="240" className="text-label" style={{ fill: "#A9A9A9" }}>{p_grid_w}W</text>
-          <text x="160" y="33" className="text-label" style={{ fill: "#1E90FF" }}>0W</text>
           <text x="160" y="240" className="text-label" style={{ fill: "#FF4500" }}>{sl_power}W</text>
           <text x="129" y="220" className="text-label-sub" style={{ fill: "#FF4500" }}>{boiler_temp}°C</text>
         </svg>
@@ -427,22 +417,6 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
                     <tr><td>Heute Verbrauchte Energie:</td><td>{cons_energy_from_grid_wh} Wh</td></tr>
                     <tr><td>Gesamt Eingespeiste Energie:</td><td>{energy_real_prod_wh} Wh</td></tr>
                     <tr><td>Gesamt Verbrauchte Energie:</td><td>{energy_real_cons_wh} Wh</td></tr>
-                </tbody>
-                </table>
-            </div>
-        </ReactTooltip>
-        <ReactTooltip id="car-tooltip" place="top" style={{ marginTop: '40px' }}>
-            <div>
-                <table>
-                <tbody>
-                    <tr><td>Status:</td><td>{cp_status}</td></tr>
-                    <tr><td>Strom Eingestellt:</td><td>{user_set_current} A</td></tr>
-                    <tr><td>Strom Vorgabe:</td><td>{max_current_to_ev} A</td></tr>
-                    <tr><td>Geladene Energie:</td><td>{charged_energy} Wh</td></tr>
-                    <tr><td>Temperatur:</td><td>{housing_temp} °C</td></tr>
-                    <tr><td>Warnung:</td><td>{warning_code}</td></tr>
-                    <tr><td>Fehler:</td><td>{error_code}</td></tr>
-                    <tr><td>Realais:</td><td>{switched_relais}</td></tr>
                 </tbody>
                 </table>
             </div>
