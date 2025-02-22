@@ -74,7 +74,7 @@ function SolarPVChart() {
           fillColor = "rgba(200, 255, 0, 0.3)";
           type = "areaspline";
           yAxis = 0;
-          name= "Produktion Süd / West";
+          name= "Produktion West";
           visible = false;
           break;
         case "p_pv2":

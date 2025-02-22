@@ -1,9 +1,9 @@
 <?php
 // Function to fetch data from the provided URL using cURL
 
-header("Access-Control-Allow-Origin: *");  // Allow all origins (you can replace '*' with your frontend URL like 'http://localhost:3000')
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");  // Allow necessary methods
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Origin");  // Allow necessary headers
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Origin");
 
 function fetchData($url) {
     $ch = curl_init();
@@ -17,8 +17,8 @@ function fetchData($url) {
 }
 
 // URLs to fetch data from
-$values_url = "http://192.168.8.90:8000/values";
-$energy_url = "http://192.168.8.90:5000/energy/sum";
+$values_url = "http://192.168.1.10:8000/values";
+$energy_url = "http://192.168.1.10:5000/energy/sum";
 //$values_url = "http://kloibi.ddns.net:55000/values";
 //$energy_url = "http://kloibi.ddns.net:58000/energy/sum";
 

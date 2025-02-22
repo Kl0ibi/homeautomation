@@ -17,7 +17,7 @@ const FlowDiagram = () => {
     useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/live_proxy.php");
+        const response = await fetch("live_proxy.php");
         const json = await response.json();
         
         // Set the data from the combined response
@@ -259,7 +259,7 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
                 {createArcValueWithUnit((heated_energy_wh / 1000).toFixed(2), "kWh", "#FF4500", -7, 20)}
 
 
-                <text x="20" y="32" className="text-label-sub3" style={{ fill: "#FFD700" }}>Süd / West</text>
+                <text x="25" y="32" className="text-label-sub3" style={{ fill: "#FFD700" }}>West</text>
                 {createArcValueWithUnit((prod_energy_pv1_wh / 1000).toFixed(2), "kWh", "#FFD700", 25, 20)}
                 <text x="39" y="5" className="text-label-sub1" style={{ fill: "#FFD700" }}>Ausrichtung</text>
                 <line x1="42" y1="20" x2="66" y2="20" strokeWidth="1.5" className="arc-circle"/>
@@ -330,7 +330,7 @@ const createArcValueWithUnit = (value, unit, color, x, y, header = null) => {
           <path d={createArcPath(battery_soc, 0, 100, -90, 270, 19, 25, 125)} fill="none" stroke="#32CD32" strokeWidth="2" />
 
           {/* Text Labels */}
-          <text x="10" y="130" className="text-label" style={{ fill: "#32CD32" }}>{battery_soc}%</text>
+          <text x="10" y="130" className="text-label" style={{ fill: "#32CD32" }}>{battery_soc.toFixed(0)}%</text>
           <text x="3" y="195" className="text-label" style={{ fill: "#32CD32" }}>{battery_power_w}W</text>
           <text x="80" y="33" className="text-label" style={{ fill: "#FFD700" }}>{sum_pv_power}W</text>
           <text x="60" y="45" className="text-label-sub" style={{ fill: "#FFD700" }}>{pv1_power}W</text>

@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ClipLoader } from "react-spinners";
 import "./grid_chart.css";
 
-const API_BASE_URL = "grid_chart_proxy.php:8000";
+const API_BASE_URL = "grid_chart_proxy.php";
 
 function GridChart() {
   const [chartData, setChartData] = useState({ categories: [], series: [] });

@@ -58,7 +58,7 @@ const fetchData = async (date) => {
     switch (key) {
       case "prod_energy_pv1_wh":
         color = "rgba(255, 255, 0, 0.6)";
-        name = "PV Süd / West";
+        name = "PV West";
         break;
       case "prod_energy_pv2_wh":
         color = "rgba(255, 165, 0, 0.6)";
